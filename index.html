@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Association of Students Unity – A professional platform for students.">
+<title>ASU – Association of Students Unity</title>
+
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;0,900;1,800&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<!-- Icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="icon" href="assets/logo/logo.png">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- ========================================
+     NAVBAR
+======================================== -->
+<nav id="nav">
+
+  <!-- Brand -->
+  <div class="nav-brand" onclick="goPage('home')" style="cursor:pointer">
+    <div class="nav-logo" id="nav-logo-box">
+      <i class="fas fa-graduation-cap" id="nav-logo-icon"></i>
+    </div>
+    <div class="nav-wordmark">
+      <strong>ASU</strong>
+      <small data-t="nav_sub">Association of Students Unity</small>
+    </div>
+  </div>
+
+  <!-- Desktop links -->
+  <div class="nav-links" id="nav-links">
+    <span class="nl active" data-t="nav_home" onclick="goPage('home',this)"><i class="fas fa-house-chimney fa-fw"></i> Home</span>
+    <span class="nl locked" data-lock data-t="nav_pdf" onclick="goPage('pdf',this)"><i class="fas fa-book-open-reader fa-fw"></i> PDF</span>
+    <span class="nl locked" data-lock data-t="nav_video" onclick="goPage('video',this)"><i class="fas fa-circle-play fa-fw"></i> Video</span>
+    <span class="nl locked" data-lock data-t="nav_gallery" onclick="goPage('gallery',this)"><i class="fas fa-photo-film fa-fw"></i> Gallery</span>
+    <span class="nl locked" data-lock data-t="nav_about" onclick="goPage('about',this)"><i class="fas fa-universal-access fa-fw"></i> About</span>
+  </div>
+
+  <!-- Language -->
+  <div class="lang-sw" id="lang-sw">
+    <button onclick="setLang('en')" class="active" id="lb-en">🇺🇸 EN</button>
+    <button onclick="setLang('fr')" id="lb-fr">🇫🇷 FR</button>
+    <button onclick="setLang('mg')" id="lb-mg">🇲🇬 MG</button>
+  </div>
+
+  <!-- Auth buttons (logged out) -->
+  <div class="nav-auth" id="nav-auth">
+    <button class="btn btn-sm btn-outline-blue" onclick="goPage('login')"><i class="fas fa-sign-in-alt"></i> <span data-t="btn_login">Login</span></button>
+    <button class="btn btn-sm btn-blue" onclick="goPage('register')"><i class="fas fa-user-plus"></i> <span data-t="btn_register">Register</span></button>
+  </div>
+
+  <!-- Profile (logged in) -->
+  <div class="nav-profile" id="nav-profile">
+    <div class="nav-avatar" id="nav-avatar" onclick="toggleDropdown()">
+      <i class="fas fa-user" id="nav-av-icon"></i>
+      <img id="nav-av-img" src="" alt="" style="display:none">
+    </div>
+    <span class="nav-uname" id="nav-uname"></span>
+    <!-- Dropdown -->
+    <div class="nav-dropdown" id="nav-dropdown">
+      <a onclick="goPage('profile');toggleDropdown()">
+        <i class="fas fa-user-circle"></i> <span data-t="nav_profile">My Profile</span>
+      </a>
+      <hr>
+      <button class="dd-logout" onclick="doLogout()">
+        <i class="fas fa-sign-out-alt"></i> <span data-t="btn_logout">Logout</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Hamburger -->
+  <button class="hamburger" id="hamburger" onclick="toggleMobile()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- Mobile drawer -->
+<div class="mobile-nav" id="mobile-nav">
+  <div class="mobile-nav-inner">
+    <div class="mn" onclick="goPage('home');closeMobile()"><i class="fas fa-house-chimney"></i> <span data-t="nav_home">Home</span></div>
+    <div class="mn locked" data-lock onclick="goPage('pdf');closeMobile()"><i class="fas fa-book-open-reader"></i> <span data-t="nav_pdf">PDF</span></div>
+    <div class="mn locked" data-lock onclick="goPage('video');closeMobile()"><i class="fas fa-circle-play"></i> <span data-t="nav_video">Video</span></div>
+    <div class="mn locked" data-lock onclick="goPage('gallery');closeMobile()"><i class="fas fa-photo-film"></i> <span data-t="nav_gallery">Gallery</span></div>
+    <div class="mn locked" data-lock onclick="goPage('about');closeMobile()"><i class="fas fa-universal-access"></i> <span data-t="nav_about">About</span></div>
+    <div class="mn locked" data-lock onclick="goPage('profile');closeMobile()"><i class="fas fa-user-gear"></i> <span data-t="nav_profile">Profile</span></div>
+    <div class="mn-footer">
+      <div class="mn-auth-row" id="mn-auth">
+        <button class="btn btn-sm btn-outline-blue" onclick="goPage('login');closeMobile()"><i class="fas fa-sign-in-alt"></i> <span data-t="btn_login">Login</span></button>
+        <button class="btn btn-sm btn-blue" onclick="goPage('register');closeMobile()"><i class="fas fa-user-plus"></i> <span data-t="btn_register">Register</span></button>
+      </div>
+      <div class="mn-auth-row d-none" id="mn-logout-row">
+        <button class="btn btn-sm btn-ghost" style="flex:1" onclick="doLogout();closeMobile()"><i class="fas fa-sign-out-alt"></i> <span data-t="btn_logout">Logout</span></button>
+      </div>
+      <div class="mn-lang-row">
+        <button onclick="setLang('en');closeMobile()" class="active" id="mlb-en">🇺🇸 English</button>
+        <button onclick="setLang('fr');closeMobile()" id="mlb-fr">🇫🇷 Français</button>
+        <button onclick="setLang('mg');closeMobile()" id="mlb-mg">🇲🇬 Malagasy</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ========================================
+     PAGE: LOGIN
+======================================== -->
+<div class="page" id="page-login">
+  <div class="auth-wrap">
+    <div class="auth-circle auth-circle-1"></div>
+    <div class="auth-circle auth-circle-2"></div>
+    <img src="assets/background/bg.jpg" class="auth-bg-img" alt="" onerror="this.style.display='none'">
+    <div class="auth-card">
+      <div class="auth-card-accent"></div>
+      <div class="auth-header">
+        <div class="auth-logo-mark">
+          <div class="auth-logo-icon" id="al-logo">
+            <i class="fas fa-graduation-cap" style="font-size:22px;color:#fff"></i>
+          </div>
+          <div class="auth-logo-text">
+            <strong>ASU</strong>
+            <small data-t="nav_sub">Association of Students Unity</small>
+          </div>
+        </div>
+        <h2 data-t="login_h">Welcome Back</h2>
+        <p data-t="login_sub">Sign in to access your ASU account</p>
+      </div>
+      <div class="auth-body">
+        <div class="fg">
+          <label><i class="fas fa-envelope"></i> <span data-t="lbl_email">Email Address</span></label>
+          <div class="input-wrap"><input type="email" id="li-email" placeholder="you@example.com"></div>
+          <div class="form-err" id="li-err"></div>
+        </div>
+        <div class="fg">
+          <label><i class="fas fa-lock"></i> <span data-t="lbl_pass">Password</span></label>
+          <div class="input-wrap">
+            <input type="password" id="li-pass" placeholder="••••••••">
+            <button class="eye-toggle" onclick="eye('li-pass',this)" type="button"><i class="fas fa-eye"></i></button>
+          </div>
+        </div>
+        <button class="btn btn-blue" style="width:100%;justify-content:center;padding:12px" onclick="doLogin()">
+          <i class="fas fa-sign-in-alt"></i> <span data-t="btn_login">Login</span>
+        </button>
+        <p class="auth-switch"><span data-t="login_no_acc">Don't have an account?</span> <a onclick="goPage('register')" data-t="login_reg_link">Register here</a></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ========================================
+     PAGE: REGISTER
+======================================== -->
+<div class="page" id="page-register">
+  <div class="auth-wrap">
+    <div class="auth-circle auth-circle-1"></div>
+    <div class="auth-circle auth-circle-2"></div>
+    <img src="assets/background/bg.jpg" class="auth-bg-img" alt="" onerror="this.style.display='none'">
+    <div class="auth-card">
+      <div class="auth-card-accent" style="background:var(--green)"></div>
+      <div class="auth-header">
+        <div class="auth-logo-mark">
+          <div class="auth-logo-icon" id="ar-logo"><i class="fas fa-graduation-cap" style="font-size:22px;color:#fff"></i></div>
+          <div class="auth-logo-text"><strong>ASU</strong><small data-t="nav_sub">Association of Students Unity</small></div>
+        </div>
+        <h2 data-t="reg_h">Create Your Account</h2>
+        <p data-t="reg_sub">Join the ASU community for free</p>
+      </div>
+      <div class="auth-body">
+        <!-- Photo upload -->
+        <div class="photo-row" onclick="document.getElementById('photo-file').click()">
+          <div class="photo-thumb">
+            <i class="fas fa-user" id="ph-icon"></i>
+            <img id="ph-img" src="" alt="" style="display:none">
+          </div>
+          <div>
+            <div style="font-size:.81rem;font-weight:600;color:var(--mid)" data-t="lbl_photo">Profile Photo</div>
+            <small data-t="lbl_photo_hint">Click to upload (optional)</small>
+          </div>
+          <input type="file" id="photo-file" accept="image/*" style="display:none" onchange="previewPh(this)">
+        </div>
+
+        <div class="form-grid">
+          <div class="fg">
+            <label><i class="fas fa-user"></i> <span data-t="lbl_name">Full Name</span></label>
+            <div class="input-wrap"><input type="text" id="rg-name" placeholder="Your name"></div>
+            <div class="form-err" id="rg-err"></div>
+          </div>
+          <div class="fg">
+            <label><i class="fas fa-envelope"></i> <span data-t="lbl_email">Email</span></label>
+            <div class="input-wrap"><input type="email" id="rg-email" placeholder="you@email.com"></div>
+          </div>
+          <div class="fg">
+            <label><i class="fas fa-lock"></i> <span data-t="lbl_pass">Password</span></label>
+            <div class="input-wrap">
+              <input type="password" id="rg-pass" placeholder="Min 4 characters">
+              <button class="eye-toggle" onclick="eye('rg-pass',this)" type="button"><i class="fas fa-eye"></i></button>
+            </div>
+          </div>
+          <div class="fg">
+            <label><i class="fas fa-university"></i> <span data-t="lbl_uni">University</span></label>
+            <div class="input-wrap"><input type="text" id="rg-uni" placeholder="Your university"></div>
+          </div>
+          <div class="fg">
+            <label><i class="fas fa-calendar"></i> <span data-t="lbl_dob">Date of Birth</span></label>
+            <div class="input-wrap"><input type="date" id="rg-dob"></div>
+          </div>
+          <div class="fg">
+            <label><i class="fas fa-layer-group"></i> <span data-t="lbl_grade">Grade / Level</span></label>
+            <div class="input-wrap"><input type="text" id="rg-grade" placeholder="e.g. L3, M2"></div>
+          </div>
+        </div>
+        <button class="btn btn-green" style="width:100%;justify-content:center;padding:12px" onclick="doRegister()">
+          <i class="fas fa-user-plus"></i> <span data-t="btn_register">Create Account</span>
+        </button>
+        <p class="auth-switch"><span data-t="reg_have_acc">Already have an account?</span> <a onclick="goPage('login')" data-t="reg_login_link">Login here</a></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ========================================
+     PAGE: HOME
+======================================== -->
+<div class="page active" id="page-home">
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-deco hero-deco-1"></div>
+    <div class="hero-deco hero-deco-2"></div>
+    <div class="hero-deco hero-deco-3"></div>
+    <div class="hero-ani-circle"></div>
+    <div class="hero-inner">
+      <div class="hero-content">
+        <div class="hero-pill"><i class="fas fa-star"></i> <span data-t="hero_pill">Official Student Association</span></div>
+        <h1 class="hero-h1">
+          <span data-t="hero_h1a">Welcome to</span> <em>ASU</em><br>
+          <span data-t="hero_h1b">Association of Students Unity</span>
+        </h1>
+        <ul class="slogans">
+          <li class="slogan-row"><div class="slogan-dot sd-1"><i class="fas fa-link"></i></div><span class="slogan-txt" data-t="s1">UNITY CONNECTS US</span></li>
+          <li class="slogan-row"><div class="slogan-dot sd-2"><i class="fas fa-hands-helping"></i></div><span class="slogan-txt" data-t="s2">MUTUAL SUPPORT BRINGS GOOD RESULTS</span></li>
+          <li class="slogan-row"><div class="slogan-dot sd-3"><i class="fas fa-heart"></i></div><span class="slogan-txt" data-t="s3">RESPECT AND TRUST UPLIFT EVERYONE</span></li>
+          <li class="slogan-row"><div class="slogan-dot sd-4"><i class="fas fa-star"></i></div><span class="slogan-txt" data-t="s4">DEDICATION AND LOVE LEAD TO SUCCESS</span></li>
+        </ul>
+        <p class="hero-sub" data-t="hero_sub">ASU is for all students without discrimination</p>
+        <div class="hero-actions">
+          <button class="btn btn-yellow btn-lg" onclick="openJoin()"><i class="fas fa-user-plus"></i> <span data-t="btn_join">Join Member</span></button>
+          <a href="https://www.facebook.com/ASSTUU1" target="_blank" class="btn btn-outline-white btn-lg"><i class="fab fa-facebook"></i> <span data-t="btn_follow">Follow Facebook</span></a>
+        </div>
+      </div>
+      <div class="hero-card" id="hero-card">
+        <div class="hero-card-logo" id="hc-logo">
+          <i class="fas fa-graduation-cap" id="hc-icon" style="font-size:42px;color:rgba(255,255,255,.85)"></i>
+        </div>
+        <div class="hero-card-name">ASU</div>
+        <div class="hero-card-tagline" data-t="card_tagline">Association of Students Unity</div>
+        <div class="hero-card-divider"></div>
+        <div class="hero-stats-mini">
+          <div class="hsm"><div class="hsm-num">500+</div><div class="hsm-lbl" data-t="stat_members">Members</div></div>
+          <div class="hsm"><div class="hsm-num">120+</div><div class="hsm-lbl" data-t="stat_pdfs">PDFs</div></div>
+          <div class="hsm"><div class="hsm-num">50+</div><div class="hsm-lbl" data-t="stat_events">Events</div></div>
+          <div class="hsm"><div class="hsm-num">10+</div><div class="hsm-lbl" data-t="stat_schools">Schools</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats bar -->
+  <div class="stats-bar">
+    <div class="stat-cell"><span class="stat-num c-blue">500+</span><span class="stat-lbl"><i class="fas fa-users"></i> <span data-t="stat_active">Active Members</span></span></div>
+    <div class="stat-cell"><span class="stat-num c-yellow">120+</span><span class="stat-lbl"><i class="fas fa-file-pdf"></i> <span data-t="stat_res">Study Resources</span></span></div>
+    <div class="stat-cell"><span class="stat-num c-green">50+</span><span class="stat-lbl"><i class="fas fa-calendar-check"></i> <span data-t="stat_ev">Events Held</span></span></div>
+    <div class="stat-cell"><span class="stat-num c-dark">10+</span><span class="stat-lbl"><i class="fas fa-school"></i> <span data-t="stat_sch">Partner Schools</span></span></div>
+  </div>
+
+  <!-- Why join -->
+  <section class="section bg-white">
+    <div class="sec-hdr c">
+      <span class="sec-tag st-blue" data-t="why_tag">Why Join ASU?</span>
+      <h2 class="sec-title"><span data-t="why_title">Everything a student</span> <mark data-t="why_title2">needs</mark></h2>
+      <p class="sec-desc" data-t="why_desc">Resources, community, and support — all under one unified platform built by students, for students.</p>
+    </div>
+    <div class="cards-3">
+      <div class="why-card"><div class="wi wi-b"><i class="fas fa-book-open"></i></div><h3 data-t="wc1h">Study Resources</h3><p data-t="wc1p">Access hundreds of PDFs, notes, and guides freely shared by ASU members across all disciplines.</p></div>
+      <div class="why-card"><div class="wi wi-y"><i class="fas fa-video"></i></div><h3 data-t="wc2h">Video Content</h3><p data-t="wc2p">Watch educational videos and replays of ASU events directly from our Facebook page.</p></div>
+      <div class="why-card"><div class="wi wi-g"><i class="fas fa-hands-helping"></i></div><h3 data-t="wc3h">Mutual Support</h3><p data-t="wc3p">Help and be helped — solidarity is the cornerstone of every action ASU takes together.</p></div>
+      <div class="why-card"><div class="wi wi-b"><i class="fas fa-globe-africa"></i></div><h3 data-t="wc4h">Open to All</h3><p data-t="wc4p">Every student is welcome regardless of school, background, or field. Zero discrimination.</p></div>
+      <div class="why-card"><div class="wi wi-y"><i class="fas fa-trophy"></i></div><h3 data-t="wc5h">Recognition</h3><p data-t="wc5p">Active members are celebrated and supported on their academic and personal journeys.</p></div>
+      <div class="why-card"><div class="wi wi-g"><i class="fas fa-network-wired"></i></div><h3 data-t="wc6h">Networking</h3><p data-t="wc6p">Build lasting connections with peers, mentors, and partners across institutions.</p></div>
+    </div>
+  </section>
+
+  <!-- Testimonials -->
+  <section class="section bg-off">
+    <div class="sec-hdr c">
+      <span class="sec-tag st-green" data-t="test_tag">Testimonials</span>
+      <h2 class="sec-title"><span data-t="test_h">What our</span> <mark data-t="test_h2">members say</mark></h2>
+    </div>
+    <div class="testi-grid" id="testi-grid">
+      <!-- Generated by script.js -->
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <div class="cta-band">
+    <h2 data-t="cta_h">Ready to be part of something greater?</h2>
+    <p data-t="cta_p">Join hundreds of students who are growing together through ASU.</p>
+    <div class="cta-row">
+      <button class="btn btn-blue btn-lg" onclick="openJoin()"><i class="fas fa-user-plus"></i> <span data-t="btn_join">Join Member</span></button>
+      <a href="https://www.facebook.com/ASSTUU1" target="_blank" class="btn btn-outline-blue btn-lg"><i class="fab fa-facebook"></i> <span data-t="btn_follow">Follow Facebook</span></a>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <div class="sf-brand">
+      <div class="sf-logo"><img src="assets/logo/logo.png" alt="ASU Logo" onerror="this.parentElement.style.display='none'"></div>
+      <strong>ASU</strong><small data-t="nav_sub">Association of Students Unity · Since 2025</small>
+    </div>
+    <div class="sf-links">
+      <a href="https://www.facebook.com/ASSTUU1" target="_blank"><i class="fab fa-facebook"></i> Facebook</a>
+      <a href="https://wa.me/261333498234" target="_blank"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+      <a href="mailto:rakotoniainazominasylver@gmail.com"><i class="fas fa-envelope"></i> Email</a>
+    </div>
+    <div class="sf-copy" data-t="footer_copy">© 2025 ASU. All rights reserved.</div>
+  </footer>
+</div>
+
+<!-- ========================================
+     PAGE: PDF
+======================================== -->
+<div class="page" id="page-pdf">
+  <div class="pg-hdr">
+    <div class="pg-hdr-label"><i class="fas fa-folder-open"></i> <span data-t="pdf_label">Resource Library</span></div>
+    <h1 class="pg-hdr-title"><i class="fas fa-book"></i> <span data-t="pdf_h">PDF & Research</span></h1>
+    <p class="pg-hdr-desc" data-t="pdf_desc">Search and download study materials. Connect to Google Scholar.</p>
+  </div>
+  <div class="pdf-body">
+    <div class="pdf-search-card">
+      <div class="pdf-search-row">
+        <i class="fas fa-search"></i>
+        <input type="text" id="pdf-q" placeholder="Search PDFs or type a topic…" oninput="filterPDF()" onkeydown="if(event.key==='Enter')scholarGo()">
+        <button class="pdf-scholar-btn" onclick="scholarGo()"><i class="fas fa-external-link-alt"></i> <span data-t="btn_scholar">Google Scholar</span></button>
+      </div>
+    </div>
+    <p class="pdf-hint"><i class="fas fa-info-circle"></i> <span data-t="pdf_hint">Press Enter or click Google Scholar to search academic papers at</span> <a href="https://scholar.google.com" target="_blank">scholar.google.com</a></p>
+    <div class="pdf-subject-bar" id="pdf-subs"></div>
+    <div class="pdf-count-bar"><div class="pdf-count" id="pdf-cnt"></div></div>
+    <div class="pdf-list" id="pdf-list"></div>
+  </div>
+  <footer class="site-footer">
+    <div class="sf-brand">
+      <div class="sf-logo" style="width:28px;height:28px;margin-right:8px"><img src="assets/logo/logo.png" alt="ASU Logo" onerror="this.parentElement.style.display='none'" style="width:100%;height:100%;object-fit:cover;border-radius:50%"></div>
+      <strong>ASU</strong>
+    </div>
+    <div class="sf-copy" data-t="footer_copy">© 2025 ASU. All rights reserved.</div>
+  </footer>
+</div>
+
+<!-- ========================================
+     PAGE: VIDEO
+======================================== -->
+<div class="page" id="page-video">
+  <div class="pg-hdr green">
+    <div class="pg-hdr-label"><i class="fas fa-video"></i> <span data-t="vid_label">Media Center</span></div>
+    <h1 class="pg-hdr-title"><i class="fas fa-play-circle"></i> <span data-t="vid_h">Video Gallery</span></h1>
+    <p class="pg-hdr-desc" data-t="vid_desc">Watch ASU videos and sessions from our official Facebook page.</p>
+  </div>
+  <div class="vid-body">
+    <div class="vid-notice">
+      <i class="fab fa-facebook-square"></i>
+      <div>
+        <h4 data-t="vid_nt">Videos from ASU Facebook</h4>
+        <p><span data-t="vid_nd">All content is embedded from</span> <a href="https://www.facebook.com/ASSTUU1" target="_blank">facebook.com/ASSTUU1</a>. <span data-t="vid_nf">Follow us for the latest.</span></p>
+      </div>
+    </div>
+    <div class="vid-grid">
+      <div class="vid-card">
+        <div class="vid-ratio">
+          <iframe src="https://www.facebook.com/plugins/video.php?href=https%3A%2F%2Fwww.facebook.com%2FASSTUU1&show_text=false&allowfullscreen=true" allow="autoplay;clipboard-write;encrypted-media;picture-in-picture;web-share" allowfullscreen></iframe>
+        </div>
+        <div class="vid-card-info">
+          <div class="vid-card-title" data-t="v1t">ASU – Latest Videos</div>
+          <div class="vid-card-meta"><i class="fab fa-facebook"></i> facebook.com/ASSTUU1</div>
+        </div>
+      </div>
+      <div class="vid-card">
+        <div class="vid-ratio">
+          <iframe src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2FASSTUU1&tabs=timeline&show_facepile=false&adapt_container_width=true" scrolling="no" allow="encrypted-media"></iframe>
+        </div>
+        <div class="vid-card-info">
+          <div class="vid-card-title" data-t="v2t">ASU Timeline</div>
+          <div class="vid-card-meta"><i class="fab fa-facebook"></i> <span data-t="v2m">Follow for updates</span></div>
+        </div>
+      </div>
+      <div class="vid-card">
+        <div class="vid-ratio" style="display:flex;align-items:center;justify-content:center;background:#0d1b2a">
+          <div style="text-align:center">
+            <i class="fab fa-facebook" style="font-size:50px;color:#1877f2;display:block;margin-bottom:13px"></i>
+            <p style="color:rgba(255,255,255,.65);font-size:.82rem;margin-bottom:14px" data-t="v3d">More videos on our page</p>
+            <a href="https://www.facebook.com/ASSTUU1" target="_blank" class="btn btn-blue"><i class="fas fa-external-link-alt"></i> <span data-t="btn_visit">Visit Page</span></a>
+          </div>
+        </div>
+        <div class="vid-card-info">
+          <div class="vid-card-title" data-t="v3t">All ASU Videos</div>
+          <div class="vid-card-meta"><i class="fab fa-facebook"></i> facebook.com/ASSTUU1</div>
+        </div>
+      </div>
+    </div>
+    <div class="explore-wrap">
+      <a href="https://www.facebook.com/ASSTUU1" target="_blank" class="btn btn-blue btn-lg">
+        <i class="fab fa-facebook"></i> <span data-t="btn_explore">Explore More on Facebook</span>
+      </a>
+    </div>
+  </div>
+  <footer class="site-footer">
+    <div class="sf-brand">
+      <div class="sf-logo" style="width:28px;height:28px;margin-right:8px"><img src="assets/logo/logo.png" alt="ASU Logo" onerror="this.parentElement.style.display='none'" style="width:100%;height:100%;object-fit:cover;border-radius:50%"></div>
+      <strong>ASU</strong>
+    </div>
+    <div class="sf-copy" data-t="footer_copy">© 2025 ASU. All rights reserved.</div>
+  </footer>
+</div>
+
+<!-- ========================================
+     PAGE: GALLERY
+======================================== -->
+<div class="page" id="page-gallery">
+  <div class="pg-hdr yellow">
+    <div class="pg-hdr-label"><i class="fas fa-images"></i> <span data-t="gal_label">Our Moments</span></div>
+    <h1 class="pg-hdr-title"><i class="fas fa-camera-retro"></i> <span data-t="gal_h">Photo Gallery</span></h1>
+    <p class="pg-hdr-desc" data-t="gal_desc">Memories from ASU events, activities, and gatherings.</p>
+  </div>
+  <div class="gal-body">
+    <div class="gal-grid" id="gal-grid"></div>
+    <div class="explore-wrap">
+      <a href="https://www.facebook.com/ASSTUU1/photos" target="_blank" class="btn btn-blue btn-lg">
+        <i class="fas fa-images"></i> <span data-t="btn_explore_gal">Explore More Photos</span>
+      </a>
+    </div>
+  </div>
+  <footer class="site-footer">
+    <div class="sf-brand">
+      <div class="sf-logo" style="width:28px;height:28px;margin-right:8px"><img src="assets/logo/logo.png" alt="ASU Logo" onerror="this.parentElement.style.display='none'" style="width:100%;height:100%;object-fit:cover;border-radius:50%"></div>
+      <strong>ASU</strong>
+    </div>
+    <div class="sf-copy" data-t="footer_copy">© 2025 ASU. All rights reserved.</div>
+  </footer>
+</div>
+
+<!-- ========================================
+     PAGE: ABOUT
+======================================== -->
+<div class="page" id="page-about">
+  <div class="pg-hdr dark">
+    <div class="pg-hdr-label"><i class="fas fa-info-circle"></i> <span data-t="ab_label">Our Story</span></div>
+    <h1 class="pg-hdr-title"><i class="fas fa-users"></i> <span data-t="ab_h">About ASU</span></h1>
+    <p class="pg-hdr-desc" data-t="ab_desc">The people and purpose behind Association of Students Unity.</p>
+  </div>
+  <div class="about-body">
+    <!-- Thank you -->
+    <div class="thanks-card">
+      <h3><i class="fas fa-heart"></i> <span data-t="thanks_h">Thank You, Members & Supporters</span></h3>
+      <div class="thank-lines">
+        <div class="tl"><i class="fas fa-check"></i><span data-t="th1">We sincerely thank all members and supporters.</span></div>
+        <div class="tl"><i class="fas fa-heart"></i><span data-t="th2">Your trust and participation make ASU stronger every day.</span></div>
+        <div class="tl"><i class="fas fa-users"></i><span data-t="th3">Together, we grow.</span></div>
+        <div class="tl"><i class="fas fa-hands-helping"></i><span data-t="th4">Together, we support each other.</span></div>
+        <div class="tl"><i class="fas fa-trophy"></i><span data-t="th5">Together, we succeed.</span></div>
+      </div>
+    </div>
+    <!-- Story -->
+    <div class="about-card">
+      <div class="ac-hdr blue"><i class="fas fa-book-reader"></i><h3 data-t="story_h">Our Story</h3></div>
+      <div class="ac-body">
+        <p class="story-p" data-t="story1">This association was created after observing the difficulties faced by many students — lack of resources, isolation, and limited peer support.</p>
+        <p class="story-p" data-t="story2">Our goal is to bring students together, provide academic and personal support, and help everyone succeed regardless of their background or field.</p>
+        <p class="story-p" data-t="story3">ASU was founded on June 14, 2025 with one simple belief: no student should be left behind. Through sharing, mutual encouragement, and a welcoming community, we continue to grow.</p>
+        <div class="info-grid-2">
+          <div class="ig-item"><label data-t="ig_founded">Founded</label><p>June 14, 2025</p></div>
+          <div class="ig-item"><label data-t="ig_mission">Mission</label><p data-t="ig_mission_v">Unity & Support</p></div>
+          <div class="ig-item"><label data-t="ig_open">Open to</label><p data-t="ig_open_v">All Students</p></div>
+          <div class="ig-item"><label data-t="ig_values">Values</label><p data-t="ig_values_v">Respect · Trust · Love</p></div>
+        </div>
+      </div>
+    </div>
+    <!-- Founder -->
+    <div class="about-card">
+      <div class="ac-hdr green"><i class="fas fa-user-tie"></i><h3 data-t="founder_h">Founder</h3></div>
+      <div class="ac-body">
+        <div class="founder-row">
+          <div class="founder-pic" id="founder-pic-wrap">
+            <i class="fas fa-user" id="founder-pic-icon"></i>
+          </div>
+          <div class="founder-info">
+            <h3>RAKOTONIAINA ZO MINAH SYLVER</h3>
+            <p data-t="founder_role">Founder & President of ASU</p>
+            <p style="font-size:.75rem;color:var(--muted);margin-top:2px"><i class="fas fa-map-marker-alt" style="color:var(--green)"></i> Madagascar</p>
+            <div class="founder-badge"><i class="fas fa-star"></i> <span data-t="founder_badge">Founding Member · Since 2025</span></div>
+          </div>
+        </div>
+        <p class="founder-hint">
+          <i class="fas fa-info-circle"></i>
+          <span data-t="founder_hint">Place founder photo at:</span> <code>assets/founder/founder.jpg</code>
+        </p>
+      </div>
+    </div>
+    <!-- Contact -->
+    <div class="about-card">
+      <div class="ac-hdr yellow"><i class="fas fa-address-book"></i><h3 data-t="contact_h">Contact & Connect</h3></div>
+      <div class="ac-body">
+        <div class="contact-list">
+          <div class="contact-row"><div class="cico em"><i class="fas fa-envelope"></i></div><div class="cinfo"><strong data-t="c_email">Email</strong><span>rakotoniainazominasylver@gmail.com</span></div></div>
+          <div class="contact-row"><div class="cico wp"><i class="fab fa-whatsapp"></i></div><div class="cinfo"><strong>WhatsApp</strong><span>+261 33 349 8234</span></div></div>
+          <div class="contact-row"><div class="cico fb"><i class="fab fa-facebook-square"></i></div><div class="cinfo"><strong>Facebook</strong><span><a href="https://www.facebook.com/ASSTUU1" target="_blank" style="color:var(--blue)">facebook.com/ASSTUU1</a></span></div></div>
+        </div>
+        <div class="contact-btns">
+          <a href="mailto:rakotoniainazominasylver@gmail.com" class="btn btn-sm btn-em"><i class="fas fa-envelope"></i> <span data-t="btn_email">Send Email</span></a>
+          <a href="https://wa.me/261333498234" target="_blank" class="btn btn-sm btn-wp"><i class="fab fa-whatsapp"></i> <span data-t="btn_whatsapp">WhatsApp Chat</span></a>
+          <a href="https://www.facebook.com/ASSTUU1" target="_blank" class="btn btn-sm btn-fb"><i class="fab fa-facebook"></i> Facebook</a>
+          <a href="https://www.facebook.com/itsyashhache" target="_blank" class="btn btn-sm btn-fb"><i class="fas fa-user"></i> <span data-t="btn_founderp">Founder Profile</span></a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <footer class="site-footer">
+    <div class="sf-brand">
+      <div class="sf-logo" style="width:28px;height:28px;margin-right:8px"><img src="assets/logo/logo.png" alt="ASU Logo" onerror="this.parentElement.style.display='none'" style="width:100%;height:100%;object-fit:cover;border-radius:50%"></div>
+      <strong>ASU</strong><small data-t="nav_sub">Association of Students Unity · Since 2025</small>
+    </div>
+    <div class="sf-links">
+      <a href="https://www.facebook.com/ASSTUU1" target="_blank"><i class="fab fa-facebook"></i> Facebook</a>
+      <a href="https://wa.me/261333498234" target="_blank"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+    </div>
+    <div class="sf-copy" data-t="footer_copy">© 2025 ASU. All rights reserved.</div>
+  </footer>
+</div>
+
+<!-- ========================================
+     PAGE: PROFILE
+======================================== -->
+<div class="page" id="page-profile">
+  <div class="pg-hdr">
+    <div class="pg-hdr-label"><i class="fas fa-user-circle"></i> <span data-t="prf_label">My Account</span></div>
+    <h1 class="pg-hdr-title" data-t="prf_h">My Profile</h1>
+    <p class="pg-hdr-desc" data-t="prf_desc">View and manage your ASU account.</p>
+  </div>
+  <div class="profile-wrap">
+    <div class="profile-hero">
+      <div class="profile-av-wrap" id="prf-av-wrap" onclick="document.getElementById('prf-photo-input').click()">
+        <i class="fas fa-user" id="prf-av-icon"></i>
+        <img id="prf-av-img" src="" alt="" style="display:none">
+        <div class="profile-av-edit"><i class="fas fa-camera"></i></div>
+      </div>
+      <input type="file" id="prf-photo-input" accept="image/*" style="display:none" onchange="changePrfPhoto(this)">
+      <div class="profile-name" id="prf-name">—</div>
+      <div class="profile-email" id="prf-email">—</div>
+      <div class="profile-uni" id="prf-uni"></div>
+    </div>
+    <div class="profile-card">
+      <div class="profile-card-title"><i class="fas fa-id-card"></i> <span data-t="prf_info">Account Information</span></div>
+      <div class="pf-row"><span class="pf-label" data-t="lbl_name">Full Name</span><span class="pf-val" id="pf-name">—</span></div>
+      <div class="pf-row"><span class="pf-label" data-t="lbl_email">Email</span><span class="pf-val" id="pf-email">—</span></div>
+      <div class="pf-row"><span class="pf-label" data-t="lbl_uni">University</span><span class="pf-val" id="pf-uni">—</span></div>
+      <div class="pf-row"><span class="pf-label" data-t="lbl_grade">Grade</span><span class="pf-val" id="pf-grade">—</span></div>
+      <div class="pf-row"><span class="pf-label" data-t="lbl_dob">Date of Birth</span><span class="pf-val" id="pf-dob">—</span></div>
+      <div class="pf-row"><span class="pf-label" data-t="prf_since">Member Since</span><span class="pf-val" id="pf-since">—</span></div>
+    </div>
+    <div class="profile-actions">
+      <button class="btn btn-outline-blue btn-sm" onclick="document.getElementById('prf-photo-input').click()">
+        <i class="fas fa-camera"></i> <span data-t="btn_change_photo">Change Photo</span>
+      </button>
+      <button class="btn btn-sm" style="background:#fce8e8;color:#c0392b;border:1.5px solid #f8d5d5" onclick="doLogout()">
+        <i class="fas fa-sign-out-alt"></i> <span data-t="btn_logout">Logout</span>
+      </button>
+    </div>
+  </div>
+  <footer class="site-footer">
+    <div class="sf-brand">
+      <div class="sf-logo" style="width:28px;height:28px;margin-right:8px"><img src="assets/logo/logo.png" alt="ASU Logo" onerror="this.parentElement.style.display='none'" style="width:100%;height:100%;object-fit:cover;border-radius:50%"></div>
+      <strong>ASU</strong>
+    </div>
+    <div class="sf-copy" data-t="footer_copy">© 2025 ASU. All rights reserved.</div>
+  </footer>
+</div>
+
+<!-- ========================================
+     LIGHTBOX
+======================================== -->
+<div id="lightbox" onclick="closeLB()">
+  <button id="lb-close" onclick="closeLB()"><i class="fas fa-times"></i></button>
+  <div class="lb-content">
+    <img id="lb-img" src="" alt="">
+    <div id="lb-caption"></div>
+    <div id="lb-desc"></div>
+  </div>
+</div>
+
+<!-- ========================================
+     JOIN MODAL
+======================================== -->
+<div class="overlay" id="join-ov">
+  <div class="modal">
+    <div class="modal-hdr blue">
+      <button class="modal-x" onclick="closeJoin()"><i class="fas fa-times"></i></button>
+      <h2 data-t="join_h">Join ASU</h2>
+      <p data-t="join_sub">Become part of the student unity movement</p>
+    </div>
+    <div class="modal-body">
+      <div class="join-step active" id="j1">
+        <div class="join-box">
+          <i class="fab fa-facebook-square"></i>
+          <p>
+            <strong data-t="j1_bold">Step 1:</strong>
+            <span data-t="j1_text"> Please follow our Facebook page first. This keeps you connected with all ASU updates.</span><br><br>
+            <a href="https://www.facebook.com/ASSTUU1" target="_blank"><i class="fas fa-external-link-alt"></i> facebook.com/ASSTUU1</a>
+          </p>
+        </div>
+        <button class="btn-confirm bc-yellow" onclick="jNext()">
+          <i class="fas fa-check"></i> <span data-t="j1_btn">I've followed the page — Continue</span>
+        </button>
+      </div>
+      <div class="join-step" id="j2">
+        <div class="join-success-box">
+          <i class="fas fa-check-circle"></i>
+          <p data-t="j2_text">Thank you! Our team will welcome you via WhatsApp to complete your membership.</p>
+        </div>
+        <button class="btn-confirm bc-green" onclick="jFinish()">
+          <i class="fab fa-whatsapp"></i> <span data-t="j2_btn">Open WhatsApp to Join</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div id="toast"></div>
+
+<!-- ========================================
+     JAVASCRIPT
+======================================== -->
+<script src="js/script.js"></script>
+</body>
+</html>
